@@ -1,0 +1,36 @@
+import sys
+sys.stdin = open('input.txt')
+# input = sys.stdin.readline
+
+# dwarf_list = [int(input()) for _ in range(9)]
+# dwarf_list.sort()
+#
+# for i in range(len(dwarf_list)):
+#     for j in range(i+1, len(dwarf_list)):
+#         if sum(dwarf_list) - (dwarf_list[i] + dwarf_list[j]) == 100:
+#             for k in range(len(dwarf_list)):
+#                 if k != i and k != j:
+#                     print(dwarf_list[k])
+#             exit()
+
+
+dwarf_list = [int(input()) for _ in range(9)]
+seven_dwarfs = []  # 7명을 뽑아 합을 조사할 새로운 리스트 선언
+
+
+def dfs(depth, start):  # 만약 7번 재귀를 돌았다면
+    if depth == 7:  # 현재 저장된 일곱 난쟁이들의 합이 100이라면
+        if sum(seven_dwarfs) == 100:  # 오름차순으로 정렬 후 출력
+            for j in sorted(seven_dwarfs):
+                print(j)
+            exit()  # 그 후 코드 종료
+        else:  # 만약 7명을 뽑았는데 합이 100이 아니라면
+            return  # 해당 재귀를 더 이상 실행하지 않고 종료
+
+    for i in range(start, len(dwarf_list)):  # 시작 인덱스와 9명의 난쟁이가 있으므로 9번을 돈다.
+        seven_dwarfs.append(dwarf_list[i])  # 난쟁이 한 명을 추가한다.
+        dfs(depth + 1, i + 1)  # dfs를 돈다(다음 번 깊이는 +1로 해주고 인덱스는 중복되지 않게 하기 위해서 다음 인덱스를 넣어준다.)
+        seven_dwarfs.pop()  # dfs를 돌다 7명이 다 찼으나 합이 100이 아니어서 return 되었으면 넣었던 난쟁이 한 명을 다시 빼준다.
+
+
+dfs(0, 0)
